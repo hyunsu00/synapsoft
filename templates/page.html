@@ -36,7 +36,7 @@
         .text-span {
             position: absolute;
             white-space: pre;
-            color: rgba(0, 0, 0, 0.01); /* 거의 투명하지만 선택 가능 */
+            color: transparent; /* 완전히 투명 */
             font-family: Arial, sans-serif;
             font-size: 1px;
             line-height: 1;
@@ -50,15 +50,15 @@
             pointer-events: auto;
         }
 
-        /* 텍스트 선택 시 보이도록 */
+        /* 텍스트 선택 시에만 보이도록 */
         .text-span::selection {
             background: rgba(0, 123, 255, 0.3);
-            color: #000;
+            color: transparent; /* 선택 시에도 텍스트는 투명 */
         }
         
         .text-span::-moz-selection {
             background: rgba(0, 123, 255, 0.3);
-            color: #000;
+            color: transparent; /* 선택 시에도 텍스트는 투명 */
         }
     </style>
 </head>
