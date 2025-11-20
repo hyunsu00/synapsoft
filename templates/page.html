@@ -23,7 +23,7 @@
             pointer-events: none; /* 이미지 클릭 비활성화 */
         }
 
-        .text-layer {
+        .textLayer {
             position: absolute;
             left: 0;
             top: 0;
@@ -64,9 +64,9 @@
 </head>
 
 <body>
-    <div class="page">
+    <div class="page" data-page-number="{{.PageNum}}" role="region" aria-label="{{.PageNum}} 페이지" style="width: {{printf "%.0f" .Width}}px; height: {{printf "%.0f" .Height}}px;">
         <img src="{{.Image}}" alt="page image">
-        <div class="text-layer">
+        <div class="textLayer" style="width: {{printf "%.0f" .Width}}px; height: {{printf "%.0f" .Height}}px;">
             {{range .Texts}}
             <span class="text-span" style="left:{{.Left}}px;top:{{.Top}}px;width:{{.Width}}px;height:{{.Height}}px;font-size:{{.Height}}px;">{{.Text}}</span>
             {{end}}
