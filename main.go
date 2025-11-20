@@ -129,12 +129,12 @@ func processPage(instance pdfium.Pdfium, document references.FPDF_DOCUMENT, page
 	width := size.Width
 	height := size.Height
 
-	// 이미지 렌더링 - 100% 해상도로 생성
+	// 이미지 렌더링 - 웹 브라우저 표준 해상도로 생성 (96 DPI)
 	imgRes, err := instance.RenderPageInDPI(&requests.RenderPageInDPI{
 		Page: requests.Page{
 			ByReference: &pageRes.Page,
 		},
-		DPI: 72, // 100% 해상도 (PDF 기본 DPI)
+		DPI: 96, // 웹 브라우저 표준 DPI (96 DPI = 72 DPI * 1.3333333)
 	})
 	if err != nil {
 		return fmt.Errorf("render page error: %w", err)
@@ -146,20 +146,23 @@ func processPage(instance pdfium.Pdfium, document references.FPDF_DOCUMENT, page
 		return fmt.Errorf("save image error: %w", err)
 	}
 
+	// DPI 변환 비율 계산 (96 DPI / 72 DPI = 1.3333333)
+	dpiScale := 96.0 / 72.0
+
 	// 텍스트 추출
-	texts, err := extractTexts(instance, pageRes.Page, height)
+	texts, err := extractTexts(instance, pageRes.Page, height, dpiScale)
 	if err != nil {
 		log.Printf("Extract texts error: %v", err)
 		texts = []TextItem{} // 빈 배열로 계속 진행
 	}
 
-	// 페이지 데이터 구성
+	// 페이지 데이터 구성 - 이미지 크기에 맞춰 스케일링
 	pageData := PageData{
 		PageNum: pageIndex + 1,
 		Image:   filepath.Base(imgFile),
 		Texts:   texts,
-		Width:   width,
-		Height:  height,
+		Width:   width * dpiScale,  // 96 DPI로 스케일링된 너비
+		Height:  height * dpiScale, // 96 DPI로 스케일링된 높이
 	}
 
 	// HTML 파일 생성
@@ -167,7 +170,7 @@ func processPage(instance pdfium.Pdfium, document references.FPDF_DOCUMENT, page
 	return renderHTML(pageData, htmlFile)
 }
 
-func extractTexts(instance pdfium.Pdfium, page references.FPDF_PAGE, pageHeight float64) ([]TextItem, error) {
+func extractTexts(instance pdfium.Pdfium, page references.FPDF_PAGE, pageHeight float64, dpiScale float64) ([]TextItem, error) {
 	// 텍스트 페이지 로드 - references.FPDF_PAGE를 requests.Page로 변환
 	textPage, err := instance.FPDFText_LoadPage(&requests.FPDFText_LoadPage{
 		Page: requests.Page{
@@ -218,13 +221,13 @@ func extractTexts(instance pdfium.Pdfium, page references.FPDF_PAGE, pageHeight 
 
 		// 모든 문자 처리 (공백 포함)
 		if char != "\n" && char != "\r" && char != "\t" && char != "" {
-			// PDF 좌표계를 CSS 좌표계로 변환 (100% 기준)
+			// PDF 좌표계를 CSS 좌표계로 변환 (DPI 스케일링 적용)
 			// PDF는 왼쪽 하단이 원점, CSS는 왼쪽 상단이 원점
-			// 베이스라인 기준으로 정확한 위치 계산
-			left := rect.Left
-			top := pageHeight - rect.Bottom // Bottom을 사용해 베이스라인 맞춤
-			width := rect.Right - rect.Left
-			height := rect.Top - rect.Bottom
+			// 베이스라인 기준으로 정확한 위치 계산 후 DPI 스케일링 적용
+			left := rect.Left * dpiScale
+			top := (pageHeight - rect.Bottom) * dpiScale // Bottom을 사용해 베이스라인 맞춤
+			width := (rect.Right - rect.Left) * dpiScale
+			height := (rect.Top - rect.Bottom) * dpiScale
 
 			texts = append(texts, TextItem{
 				Text:   char,
