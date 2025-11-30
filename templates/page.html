@@ -64,7 +64,7 @@
 </head>
 
 <body>
-    <div class="page" data-page-number="{{.PageNum}}" role="region" aria-label="{{.PageNum}} 페이지" style="width: {{printf "%.0f" .Width}}px; height: {{printf "%.0f" .Height}}px;">
+    <div class="page" data-page-number="{{.PageNum}}" data-page-size="width: {{printf "%.0f" .RealWidth}}px; height: {{printf "%.0f" .RealHeight}}px;" role="region" aria-label="{{.PageNum}} 페이지" style="width: {{printf "%.0f" .Width}}px; height: {{printf "%.0f" .Height}}px;">
         <img src="{{.Image}}" alt="page image">
         <div class="textLayer" style="width: {{printf "%.0f" .Width}}px; height: {{printf "%.0f" .Height}}px;">
             {{range .Texts}}

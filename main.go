@@ -25,11 +25,13 @@ type TextItem struct {
 }
 
 type PageData struct {
-	PageNum int
-	Image   string
-	Texts   []TextItem
-	Width   float64
-	Height  float64
+	PageNum    int
+	Image      string
+	Texts      []TextItem
+	Width      float64
+	Height     float64
+	RealWidth  float64 // PDF 페이지의 실제 너비
+	RealHeight float64 // PDF 페이지의 실제 높이
 }
 
 func main() {
@@ -158,11 +160,13 @@ func processPage(instance pdfium.Pdfium, document references.FPDF_DOCUMENT, page
 
 	// 페이지 데이터 구성 - 이미지 크기에 맞춰 스케일링
 	pageData := PageData{
-		PageNum: pageIndex + 1,
-		Image:   filepath.Base(imgFile),
-		Texts:   texts,
-		Width:   width * dpiScale,  // 96 DPI로 스케일링된 너비
-		Height:  height * dpiScale, // 96 DPI로 스케일링된 높이
+		PageNum:    pageIndex + 1,
+		Image:      filepath.Base(imgFile),
+		Texts:      texts,
+		Width:      width * dpiScale,  // 96 DPI로 스케일링된 너비
+		Height:     height * dpiScale, // 96 DPI로 스케일링된 높이
+		RealWidth:  width,             // PDF 페이지의 실제 너비
+		RealHeight: height,            // PDF 페이지의 실제 높이
 	}
 
 	// HTML 파일 생성
