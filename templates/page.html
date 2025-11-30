@@ -2,76 +2,19 @@
 <html lang="ko">
 
 <head>
-    <meta charset="UTF-8">
-    <style>
-        .page {
-            position: relative;
-            width: {{.Width}}px;
-            height: {{.Height}}px;
-            border: 1px solid #ddd;
-            margin: 20px auto;
-            background: white;
-        }
-
-        .page img {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none; /* 이미지 클릭 비활성화 */
-        }
-
-        .textLayer {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10; /* 높은 z-index로 설정 */
-            pointer-events: auto;
-        }
-
-        .text-span {
-            position: absolute;
-            white-space: pre;
-            color: transparent; /* 완전히 투명 */
-            font-family: Arial, sans-serif;
-            font-size: 1px;
-            line-height: 1;
-            cursor: text;
-            user-select: text;
-            -webkit-user-select: text;
-            -moz-user-select: text;
-            -ms-user-select: text;
-            transform-origin: left bottom;
-            overflow: visible;
-            pointer-events: auto;
-        }
-
-        /* 텍스트 선택 시에만 보이도록 */
-        .text-span::selection {
-            background: rgba(0, 123, 255, 0.3);
-            color: transparent; /* 선택 시에도 텍스트는 투명 */
-        }
-        
-        .text-span::-moz-selection {
-            background: rgba(0, 123, 255, 0.3);
-            color: transparent; /* 선택 시에도 텍스트는 투명 */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="page.css">
 </head>
 
 <body>
-    <div class="page" data-page-number="{{.PageNum}}" data-page-width="{{printf "%.0f" .RealWidth}}" data-page-height="{{printf "%.0f" .RealHeight}}" role="region" aria-label="{{.PageNum}} 페이지" style="width: {{printf "%.0f" .Width}}px; height: {{printf "%.0f" .Height}}px;">
-        <img src="{{.Image}}" alt="page image">
-        <div class="textLayer" style="width: {{printf "%.0f" .Width}}px; height: {{printf "%.0f" .Height}}px;">
-            {{range .Texts}}
-            <span class="text-span" style="left:{{.Left}}px;top:{{.Top}}px;width:{{.Width}}px;height:{{.Height}}px;font-size:{{.Height}}px;">{{.Text}}</span>
-            {{end}}
-        </div>
+  <div class="page" data-page-number="{{.PageNum}}" data-page-width="{{printf "%.0f" .RealWidth}}" data-page-height="{{printf "%.0f" .RealHeight}}" role="region" aria-label="{{.PageNum}} 페이지" style="width: {{printf "%.0f" .Width}}px; height: {{printf "%.0f" .Height}}px;">
+    <img src="{{.Image}}" alt="page image">
+    <div class="textLayer" style="width: {{printf "%.0f" .Width}}px; height: {{printf "%.0f" .Height}}px;">
+      {{- range .Texts}}
+      <span class="text-span" style="left:{{.Left}}px;top:{{.Top}}px;width:{{.Width}}px;height:{{.Height}}px;font-size:{{.Height}}px;">{{.Text}}</span>
+      {{- end}}
     </div>
+  </div>
 </body>
 
 </html>

@@ -1,0 +1,19 @@
+{
+    "[javascript]": {
+		"editor.tabSize": 2 // .js 파일에 대한 탭 크기 설정
+	},
+	"[html]": {
+		"editor.tabSize": 2 // .html 파일에 대한 탭 크기 설정
+	},
+	"[css]": {
+		"editor.tabSize": 2 // .css 파일에 대한 탭 크기 설정
+	},
+	"[json]": {
+		"editor.tabSize": 2 // .json 파일에 대한 탭 크기 설정
+	},
+	"editor.formatOnSave": false, // 저장 시 자동 포맷팅
+	"html.format.enable": true, // HTML 포맷팅 활성화
+	"prettier.printWidth": 200,
+	"liveServer.settings.ChromeDebuggingAttachment": true,
+	"liveServer.settings.port": 5501
+}

@@ -1,0 +1,56 @@
+.page {
+  position: relative;
+  border: 1px solid #ddd;
+  margin: 20px auto;
+  background: white;
+}
+
+.page img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* 이미지 클릭 비활성화 */
+}
+
+.textLayer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+
+.text-span {
+  position: absolute;
+  white-space: pre;
+  color: transparent;
+  /* 완전히 투명 */
+  font-family: Arial, sans-serif;
+  font-size: 1px;
+  line-height: 1;
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  transform-origin: left bottom;
+  overflow: visible;
+  pointer-events: auto;
+}
+
+/* 텍스트 선택 시에만 보이도록 */
+.text-span::selection {
+  background: rgba(0, 123, 255, 0.3);
+  color: transparent;
+  /* 선택 시에도 텍스트는 투명 */
+}
+
+.text-span::-moz-selection {
+  background: rgba(0, 123, 255, 0.3);
+  color: transparent;
+  /* 선택 시에도 텍스트는 투명 */
+}
